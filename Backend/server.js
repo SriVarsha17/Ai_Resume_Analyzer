@@ -53,7 +53,10 @@ if (!fs.existsSync(uploadsDir)) {
 }
 
 // Global Middlewares
-app.use(cors());
+app.use(cors({
+  origin: "https://ai-resume-analyzer-five-umber.vercel.app/login",
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
