@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+@theme {
+  --color-dark-950: #09090b;
+  --color-dark-900: #121214;
+  --color-dark-800: #1a1a1e;
+  --color-dark-700: #27272a;
+  --color-dark-600: #3f3f46;
+  --color-dark-500: #71717a;
+
+  --color-brand-50: #f5f3ff;
+  --color-brand-100: #ede9fe;
+  --color-brand-200: #ddd6fe;
+  --color-brand-300: #c4b5fd;
+  --color-brand-400: #a78bfa;
+  --color-brand-500: #8b5cf6;
+  --color-brand-600: #7c3aed;
+  --color-brand-700: #6d28d9;
+  --color-brand-800: #5b21b6;
+
+  --color-accent-50: #ecfdf5;
+  --color-accent-500: #10b981;
+  --color-accent-600: #059669;
+
+  --color-danger-50: #fef2f2;
+  --color-danger-500: #ef4444;
+  --color-danger-600: #dc2626;
+
+  --font-sans: "Outfit", "Inter", sans-serif;
+}
+
+body {
+  @apply bg-dark-950 text-white min-h-screen font-sans antialiased;
+}
+
+/* Glassmorphism custom card styling */
+.glass {
+  background: rgba(26, 26, 30, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-hover:hover {
+  background: rgba(39, 39, 42, 0.6);
+  border-color: rgba(139, 92, 246, 0.35); /* brand-500 tint */
+  transform: translateY(-2px);
+}
+
+/* Custom Scrollbar for dashboards */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #09090b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
+}

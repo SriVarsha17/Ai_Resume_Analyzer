@@ -1,0 +1,19 @@
+module.exports = [
+"javascript",
+"react",
+"node",
+"mongodb",
+"express",
+"html",
+"css",
+"docker",
+"aws",
+"kubernetes",
+"sql",
+"python",
+"java",
+"git",
+"rest",
+"api",
+"typescript"
+];

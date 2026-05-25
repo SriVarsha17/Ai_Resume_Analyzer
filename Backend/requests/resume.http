@@ -1,0 +1,47 @@
+POST http://localhost:5000/api/resume/upload
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMDZhMDkxMzdiNzgyMDA1YTBlMTg3YSIsImlhdCI6MTc3ODgxOTIyMSwiZXhwIjoxODEwMzc2ODIxfQ.CFfom0pGnQznF0U8-eb_xVli7wIzdDMYP3X5TE4V35k
+Content-Type: multipart/form-data
+
+--boundary
+Content-Disposition: form-data; name="resume"; filename="Resume.pdf"
+Content-Type: application/pdf
+
+< ./Resume.pdf
+
+--boundary
+Content-Disposition: form-data; name="jobDescription"
+
+Looking for a MERN Stack Developer with React, Node.js, Express, MongoDB, REST APIs, and Git experience.
+--boundary--
+
+### GET RESUME HISTORY
+GET http://localhost:5000/api/resume/history
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMDZhMDkxMzdiNzgyMDA1YTBlMTg3YSIsImlhdCI6MTc3ODgxOTIyMSwiZXhwIjoxODEwMzc2ODIxfQ.CFfom0pGnQznF0U8-eb_xVli7wIzdDMYP3X5TE4V35k
+
+
+
+### GET SINGLE RESUME
+GET http://localhost:5000/api/resume/6a0a951d821eb40706effee1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMDZhMDkxMzdiNzgyMDA1YTBlMTg3YSIsImlhdCI6MTc3ODgxOTIyMSwiZXhwIjoxODEwMzc2ODIxfQ.CFfom0pGnQznF0U8-eb_xVli7wIzdDMYP3X5TE4V35k
+
+
+
+
+### UPDATE RESUME
+PUT http://localhost:5000/api/resume/6a0a951d821eb40706effee1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMDZhMDkxMzdiNzgyMDA1YTBlMTg3YSIsImlhdCI6MTc3ODgxOTIyMSwiZXhwIjoxODEwMzc2ODIxfQ.CFfom0pGnQznF0U8-eb_xVli7wIzdDMYP3X5TE4V35k
+
+{
+  "atsScore": 95,
+  "suggestions": [
+    "Add more React projects",
+    "Improve MongoDB skills"
+  ]
+}
+
+
+
+### DELETE RESUME
+DELETE http://localhost:5000/api/resume/6a0a951d821eb40706effee1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMDZhMDkxMzdiNzgyMDA1YTBlMTg3YSIsImlhdCI6MTc3ODgxOTIyMSwiZXhwIjoxODEwMzc2ODIxfQ.CFfom0pGnQznF0U8-eb_xVli7wIzdDMYP3X5TE4V35k

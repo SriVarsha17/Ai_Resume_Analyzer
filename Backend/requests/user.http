@@ -1,0 +1,39 @@
+### REGISTER USER
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "Valli12",
+  "email": "valli12@gmail.com",
+  "password": "123456"
+}
+
+
+
+### LOGIN USER
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "valli@gmail.com",
+  "password": "123456"
+}
+
+
+
+### GET USER PROFILE
+GET http://localhost:5000/api/auth/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMDU3Zjk4NjFmMjE0NjUzNjA1MTIwOCIsImlhdCI6MTc3ODc0NTI0MCwiZXhwIjoxODEwMzAyODQwfQ.TE7dZQJ_9ZL1jRGysEvSYwoMUtjWBgg5mmJd3lVz3ZU
+
+
+
+### UPDATE USER PROFILE
+PUT http://localhost:5000/api/auth/profile
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMDU3Zjk4NjFmMjE0NjUzNjA1MTIwOCIsImlhdCI6MTc3ODc0NTI0MCwiZXhwIjoxODEwMzAyODQwfQ.TE7dZQJ_9ZL1jRGysEvSYwoMUtjWBgg5mmJd3lVz3ZU
+
+{
+  "name": "Varsha Updated",
+  "email": "varsha@gmail.com",
+  "password": "newpassword"
+}
