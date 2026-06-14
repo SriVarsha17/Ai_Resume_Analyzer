@@ -54,8 +54,15 @@ const Compare = () => {
 
     setLoading(true);
     try {
-      const res = await api.compareAnalyses(analysisId1, analysisId2);
-      setComparison(res.data);
+     const res = await api.compareAnalyses(
+  analysisId1,
+  analysisId2
+);
+
+console.log("COMPARE RESPONSE");
+console.log(res);
+
+setComparison(res);
     } catch (err) {
       setError(
         err.response?.data?.message || err.message || "Failed to compare analysis reports."
