@@ -1,2 +1,18 @@
-node_modules
+
+# Dependencies
+node_modules/
+
+# Environment files
 .env
+.env.*
+!.env.example
+
+# Uploaded resumes
+uploads/*
+!uploads/.gitkeep
+
+# Logs
+*.log
+
+# OS files
+.DS_Store

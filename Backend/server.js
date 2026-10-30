@@ -1,92 +1,96 @@
+
 require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const fs = require("fs");
-const bcrypt = require("bcryptjs");
 
-// Database configuration
 const connectDB = require("./config/db");
-const User = require("./models/UserModel");
 
-// Routes imports
 const authRoutes = require("./api/authAPI");
 const resumeRoutes = require("./api/resumeAPI");
 const jdRoutes = require("./api/jdAPI");
 const analyzeRoutes = require("./api/analyzeAPI");
 
-// Error middleware
-const { notFound, errorHandler } = require("./middlewares/errorMiddleware");
+const {
+  notFound,
+  errorHandler,
+} = require("./middlewares/errorMiddleware");
 
 const app = express();
 
-// Seed Demo User function
-const seedDemoUser = async () => {
-  try {
-    const demoEmail = "demo@resumegrader.com";
-    const userExists = await User.findOne({ email: demoEmail });
-    if (!userExists) {
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash("password123", salt);
-      await User.create({
-        name: "Demo User",
-        email: demoEmail,
-        password: hashedPassword,
-      });
-      console.log("Demo user seeded successfully (demo@resumegrader.com / password123)");
-    }
-  } catch (err) {
-    console.error("Failed to seed demo user:", err.message);
-  }
-};
+// Allowed frontend URLs
+const allowedOrigins = [
+  "http://localhost:5173",
+  process.env.FRONTEND_URL,
+].filter(Boolean);
 
-// Connect to MongoDB and seed
-connectDB().then(() => {
-  seedDemoUser();
-});
+// CORS configuration
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
 
-// Create uploads folder synchronously if it doesn't exist
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+  })
+);
+
+// Body parsing
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true }));
+
+// Upload directory (development fallback)
 const uploadsDir = path.join(__dirname, "uploads");
+
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
 
-// Global Middlewares
-
- // Global Middlewares
-app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://ai-resume-analyzer-five-umber.vercel.app"
-  ],
-  credentials: true
-}));
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// Serve local file uploads statically
+// Static file access
 app.use("/uploads", express.static(uploadsDir));
 
-// Route Mounts
+// API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/resume", resumeRoutes);
 app.use("/api/jd", jdRoutes);
 app.use("/api/analyze", analyzeRoutes);
 
-// Root Endpoint
+// Health check
 app.get("/", (req, res) => {
-  res.send("ATS Resume Grader Backend API Running...");
+  res.status(200).send("ATS Resume Grader Backend API Running...");
 });
 
-// Error Handling Middlewares
+// API health check
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Backend is working",
+  });
+});
+
+// Error handling
 app.use(notFound);
 app.use(errorHandler);
 
-// Listen to port
+// Start server after database connection
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+const startServer = async () => {
+  try {
+    await connectDB();
+
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Server startup failed:", error.message);
+    process.exit(1);
+  }
+};
+
+startServer();

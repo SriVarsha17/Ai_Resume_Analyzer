@@ -1,16 +1,14 @@
+
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "AI Powered Resume Grader Backend",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
     "server": "nodemon server.js",
-    "start": "nodemon server.js"
+    "test": "echo \"No tests specified\""
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
     "axios": "^1.16.1",

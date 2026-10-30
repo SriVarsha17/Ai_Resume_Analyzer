@@ -1,20 +1,20 @@
+
 import axios from "axios";
 
-// ✅ Use environment variable
+// Backend URL from Vercel environment variables
 const API_BASE_URL =
-  import.meta.env.VITE_API_URL ||
-  "https://ai-resume-analyzer-dd7f.onrender.com/api";
+  import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   withCredentials: true,
 });
 
-// ✅ Automatically attach token to every request
+// Automatically attach JWT token to every request
 axiosInstance.interceptors.request.use(
   (config) => {
     const user = JSON.parse(
-      localStorage.getItem("resume_grader_user")
+      localStorage.getItem("resume_grader_user") || "null"
     );
 
     if (user?.token) {
@@ -23,15 +23,13 @@ axiosInstance.interceptors.request.use(
 
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 const api = {
-  // Auth
+  // Authentication
   login: async (email, password) => {
-    const res = await axiosInstance.post("/auth/login", {
+    const res = await axiosInstance.post("/api/auth/login", {
       email,
       password,
     });
@@ -40,7 +38,7 @@ const api = {
   },
 
   register: async (name, email, password) => {
-    const res = await axiosInstance.post("/auth/register", {
+    const res = await axiosInstance.post("/api/auth/register", {
       name,
       email,
       password,
@@ -51,50 +49,35 @@ const api = {
 
   // Resume
   uploadResume: async (formData) => {
-
-    const user = JSON.parse(
-      localStorage.getItem("resume_grader_user")
-    );
-
     const res = await axiosInstance.post(
-      "/resume/upload",
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${user?.token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      }
+      "/api/resume/upload",
+      formData
     );
 
     return res.data;
   },
 
   getAllResumes: async () => {
-    const res = await axiosInstance.get("/resume/user/all");
+    const res = await axiosInstance.get("/api/resume/user/all");
     return res.data;
   },
 
   getResumeById: async (id) => {
-    const res = await axiosInstance.get(`/resume/${id}`);
+    const res = await axiosInstance.get(`/api/resume/${id}`);
     return res.data;
   },
 
   updateResumeText: async (id, extractedText) => {
-    const res = await axiosInstance.put(`/resume/${id}`, {
+    const res = await axiosInstance.put(`/api/resume/${id}`, {
       extractedText,
     });
 
     return res.data;
   },
 
-  // Job Description
-  saveJobDescription: async (
-    title,
-    company,
-    descriptionText
-  ) => {
-    const res = await axiosInstance.post("/jd", {
+  // Job descriptions
+  saveJobDescription: async (title, company, descriptionText) => {
+    const res = await axiosInstance.post("/api/jd", {
       title,
       company,
       descriptionText,
@@ -104,12 +87,12 @@ const api = {
   },
 
   getAllJobDescriptions: async () => {
-    const res = await axiosInstance.get("/jd/user/all");
+    const res = await axiosInstance.get("/api/jd/user/all");
     return res.data;
   },
 
   deleteJobDescription: async (id) => {
-    const res = await axiosInstance.delete(`/jd/${id}`);
+    const res = await axiosInstance.delete(`/api/jd/${id}`);
     return res.data;
   },
 
@@ -121,57 +104,37 @@ const api = {
     rawJdTitle,
     targetRole
   ) => {
-
-    const res = await axiosInstance.post(
-      "/analyze",
-      {
-        resumeId,
-        jdId,
-        rawJdText,
-        rawJdTitle,
-        targetRole,
-      }
-    );
+    const res = await axiosInstance.post("/api/analyze", {
+      resumeId,
+      jdId,
+      rawJdText,
+      rawJdTitle,
+      targetRole,
+    });
 
     return res.data;
   },
 
   getAnalysisHistory: async () => {
-    const res = await axiosInstance.get(
-      "/analyze/history"
-    );
-
+    const res = await axiosInstance.get("/api/analyze/history");
     return res.data;
   },
 
   getAnalysisById: async (id) => {
-    const res = await axiosInstance.get(
-      `/analyze/${id}`
-    );
-
+    const res = await axiosInstance.get(`/api/analyze/${id}`);
     return res.data;
   },
 
   deleteAnalysis: async (id) => {
-    const res = await axiosInstance.delete(
-      `/analyze/${id}`
-    );
-
+    const res = await axiosInstance.delete(`/api/analyze/${id}`);
     return res.data;
   },
 
-  compareAnalyses: async (
-    analysisId1,
-    analysisId2
-  ) => {
-
-    const res = await axiosInstance.post(
-      "/analyze/compare",
-      {
-        analysisId1,
-        analysisId2,
-      }
-    );
+  compareAnalyses: async (analysisId1, analysisId2) => {
+    const res = await axiosInstance.post("/api/analyze/compare", {
+      analysisId1,
+      analysisId2,
+    });
 
     return res.data;
   },
